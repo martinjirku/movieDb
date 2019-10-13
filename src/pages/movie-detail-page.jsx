@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Typography, Container, Divider, IconButton, makeStyles } from '@material-ui/core';
+import { Grid, Typography, Container, Divider, makeStyles } from '@material-ui/core';
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import StarOutlinedIcon from '@material-ui/icons/StarOutlined';
-import { getMovie } from '../actions';
+import { getMovie, addFavoriteMovie, removeFavoriteMovie } from '../actions';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -29,6 +29,9 @@ export const MovieDetailPage = () => {
   const { id } = useParams();
   const m = useSelector((state) => state.movieDetail.movie);
   const isLoading = useSelector((state) => state.movieDetail.loading);
+  const isFavorite = useSelector((state) => {
+    return !!state.favoriteMovies.movies.find((i) => i.imdbID === id);
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,6 +40,7 @@ export const MovieDetailPage = () => {
     }
   }, [dispatch, id, isLoading, m.imdbID]);
   const title = m.Title + (m.Year ? ` (${m.Year})` : '') || '';
+  const FavoriteComponent = isFavorite ? StarOutlinedIcon : StarBorderOutlinedIcon;
   return (
     <Container className={classes.container}>
       <Grid container direction="column">
@@ -50,7 +54,13 @@ export const MovieDetailPage = () => {
           </Grid>
           <Grid item xs={8}>
             <Typography variant="h4" component="h1" gutterBottom>
-              {title} <StarBorderOutlinedIcon className={classes.favoriteIcon} />
+              {title}{' '}
+              {
+                <FavoriteComponent
+                  className={classes.favoriteIcon}
+                  onClick={() => dispatch((isFavorite ? removeFavoriteMovie : addFavoriteMovie)(m))}
+                />
+              }
             </Typography>
             <Typography variant="subtitle1">
               {m.Runtime} | {m.Genre} | {m.Released} | {m.Country}

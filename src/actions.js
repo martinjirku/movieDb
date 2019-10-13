@@ -7,6 +7,9 @@ import {
   REQUEST_MOVIE,
   SET_MOVIE,
   SET_MOVIE_ERROR,
+  SET_FAVORITE_MOVIES,
+  ADD_FAVORITE_MOVIE,
+  REMOVE_FAVORITE_MOVIE,
 } from './constants';
 
 export const getMovies = (searchTerm) => ({
@@ -60,4 +63,19 @@ export const setMovie = (movie) => ({
 export const setErrorMovie = (errorMessage) => ({
   type: SET_MOVIE_ERROR,
   data: { errorMessage },
+});
+
+export const setFavoriteMovies = (movies) => ({
+  type: SET_FAVORITE_MOVIES,
+  data: { movies },
+});
+
+export const addFavoriteMovie = (movie) => ({
+  type: ADD_FAVORITE_MOVIE,
+  data: { movie },
+});
+
+export const removeFavoriteMovie = (movie) => ({
+  type: REMOVE_FAVORITE_MOVIE,
+  data: { id: movie.imdbID },
 });
