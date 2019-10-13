@@ -8,11 +8,11 @@ const useStyles = makeStyles((theme) => ({
   movieTile: {
     cursor: 'pointer',
     '& img': {
-      transition: `filter ${theme.transitions.duration.standard} ${theme.transitions.easing.easeOut}`,
+      transition: `filter 0.2s ${theme.transitions.easing.easeOut}`,
     },
     '&:hover img, &:focus img': {
       filter: 'blur(2px) brightness(65%)',
-      transition: `filter ${theme.transitions.duration.standard} ${theme.transitions.easing.easeIn}`,
+      transition: `filter 0.3s ${theme.transitions.easing.easeIn}`,
     },
   },
   loadMore: {

@@ -5,6 +5,9 @@ import { Grid, Typography, Container, Divider, makeStyles } from '@material-ui/c
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import StarOutlinedIcon from '@material-ui/icons/StarOutlined';
 import { getMovie, addFavoriteMovie, removeFavoriteMovie } from '../actions';
+import { DetailedInformation } from '../components/detailed-information';
+import { isEmptyInformation } from '../utils';
+import { appTitle } from '../constants';
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -12,17 +15,17 @@ const useStyles = makeStyles((theme) => {
       padding: theme.spacing(2),
     },
     poster: {
-      maxWidth: '100%',
-    },
-    divider: {
-      marginTop: '10px',
-      marginBottom: '30px',
+      width: '100%',
     },
     favoriteIcon: {
       cursor: 'pointer',
     },
   };
 });
+
+const setTitle = (movieName) => {
+  document.title = `${appTitle} - ${movieName}`;
+};
 
 export const MovieDetailPage = () => {
   const classes = useStyles();
@@ -35,11 +38,12 @@ export const MovieDetailPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setTitle(m.Title);
     if (!isLoading && m.imdbID !== id) {
       dispatch(getMovie(id));
     }
-  }, [dispatch, id, isLoading, m.imdbID]);
-  const title = m.Title + (m.Year ? ` (${m.Year})` : '') || '';
+  }, [dispatch, id, isLoading, m.Title, m.imdbID]);
+  const title = (m.Title || '') + (m.Year ? ` (${m.Year})` : '');
   const FavoriteComponent = isFavorite ? StarOutlinedIcon : StarBorderOutlinedIcon;
   return (
     <Container className={classes.container}>
@@ -65,18 +69,44 @@ export const MovieDetailPage = () => {
             <Typography variant="subtitle1">
               {m.Runtime} | {m.Genre} | {m.Released} | {m.Country}
             </Typography>
-            <Divider className={classes.divider} />
+            <Divider />
+            <Typography variant="subtitle1" gutterBottom>
+              {m.Type} | Rating {m.imdbRating}/10 ({m.imdbVotes} votes) | {m.Rated}{' '}
+              {isEmptyInformation(m.Website) ||
+                ` | ${(
+                  <a href={m.Website} target="blank">
+                    Website
+                  </a>
+                )}`}
+            </Typography>
             <Typography paragraph gutterBottom>
               {m.Plot}
             </Typography>
-            <Typography variant="subtitle2">Director:</Typography>
-            <Typography gutterBottom>{m.Director}</Typography>
-            <Typography variant="subtitle2">Production:</Typography>
-            <Typography gutterBottom>{m.Production}</Typography>
-            <Typography variant="subtitle2">Writer:</Typography>
-            <Typography gutterBottom>{m.Writer}</Typography>
+            <DetailedInformation title="Director" value={m.Director} />
+            <DetailedInformation title="Production" value={m.Production} />
+            <DetailedInformation title="Writer" value={m.Writer} />
+            <DetailedInformation title="Director" value={m.Director} />
           </Grid>
         </Grid>
+      </Grid>
+      <Grid container direction="row">
+        <Grid item xs={6}>
+          <DetailedInformation title="Actors" value={m.Actors} />
+          <DetailedInformation title="Awards" value={m.Awards} />
+          <DetailedInformation title="Earns" value={m.BoxOffice} />
+          <DetailedInformation title="DVD release" value={m.DVD} />
+          <DetailedInformation title="Language" value={m.Language} />
+        </Grid>
+        {m.Ratings && m.Ratings.length > 0 && (
+          <Grid item xs={6}>
+            <Typography variant="h6">Ratings</Typography>
+            {m.Ratings.map((r) => (
+              <Typography>
+                {r.Source}: <em>{r.Value}</em>
+              </Typography>
+            ))}
+          </Grid>
+        )}
       </Grid>
     </Container>
   );
