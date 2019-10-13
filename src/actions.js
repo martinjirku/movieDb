@@ -4,7 +4,10 @@ import {
   SEARCH_MOVIES_SET_ERROR,
   SEARCH_MOVIES_NEXT_PAGE,
   ADD_SEARCHED_MOVIES,
-} from '../constants';
+  REQUEST_MOVIE,
+  SET_MOVIE,
+  SET_MOVIE_ERROR,
+} from './constants';
 
 export const getMovies = (searchTerm) => ({
   type: SEARCH_MOVIES,
@@ -39,4 +42,22 @@ export const setErrorOnMovieSearch = (error, clearState = true) => ({
     error,
     clearState,
   },
+});
+
+export const getMovie = (id) => ({
+  type: REQUEST_MOVIE,
+  data: {
+    id,
+  },
+});
+
+export const setMovie = (movie) => ({
+  type: SET_MOVIE,
+  data: {
+    movie,
+  },
+});
+export const setErrorMovie = (errorMessage) => ({
+  type: SET_MOVIE_ERROR,
+  data: { errorMessage },
 });

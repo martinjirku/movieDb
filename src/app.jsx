@@ -1,5 +1,4 @@
 import React from 'react';
-import './app.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 import { TopBar } from './components/top-bar';

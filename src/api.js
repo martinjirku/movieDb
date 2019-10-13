@@ -5,6 +5,7 @@ export const searchMovies = (pageNumber = 1, searchTerm) => {
     resp.json(),
   );
 };
+
 export const getMovie = (movieId) => {
   return fetch(`${omdbApiLocation}/?apiKey=${omdbApiKey}&i=${movieId}`).then((resp) => resp.json());
 };

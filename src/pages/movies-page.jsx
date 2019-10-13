@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Grid, Container, makeStyles } from '@material-ui/core';
+import { Grid, Container, CircularProgress, makeStyles } from '@material-ui/core';
 import { SearchBox } from '../components/search-box';
 import { MovieList } from '../components/movie-list';
 import { MovieListMessage } from '../components/movie-list-message';
@@ -23,7 +23,8 @@ const setTitle = (searchTerm) => {
   document.title = `${appTitle}${searchTitleText}`;
 };
 
-const getMessage = (error, resultLength) => {
+const getMessage = (error, resultLength, isLoading) => {
+  if (isLoading) return;
   if (error === 'Too many results.') {
     return <MovieListMessage value="Too many results. Try to refine your search." />;
   }
@@ -43,6 +44,7 @@ export const MoviesPage = () => {
   const searchTermProps = useSelector((state) => state.movies.searchTerm);
   const totalResults = useSelector((state) => state.movies.totalResults);
   const error = useSelector((state) => state.movies.error);
+  const isLoading = useSelector((state) => state.movies.loading);
   const [searchTerm, setSearchTerm] = useState(searchTermProps);
   useEffect(() => {
     setTitle(searchTerm);
@@ -50,7 +52,7 @@ export const MoviesPage = () => {
   const { movies = [] } = useSelector((state) => state.movies); //, loading, totalResults
   const dispatch = useDispatch();
 
-  let resultSection = getMessage(error, movies.length);
+  let resultSection = getMessage(error, movies.length, isLoading);
 
   return (
     <Container className={classes.container}>
@@ -73,6 +75,7 @@ export const MoviesPage = () => {
           }}
         />
       )}
+      {isLoading && <CircularProgress />}
       {resultSection}
     </Container>
   );

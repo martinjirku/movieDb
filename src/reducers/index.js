@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
-import { searchMovies } from './movies-reducer';
+import { searchMoviesReducer } from './movies-reducer';
+import { movieDetailReducer } from './movie-detail-reducer';
 
-export default combineReducers({ movies: searchMovies });
+export default combineReducers({ movies: searchMoviesReducer, movieDetail: movieDetailReducer });

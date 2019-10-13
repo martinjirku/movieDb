@@ -15,7 +15,7 @@ const getInitialState = () => ({
   error: null,
 });
 
-export const searchMovies = (state = getInitialState(), action = {}) => {
+export const searchMoviesReducer = (state = getInitialState(), action = {}) => {
   const { type, data } = action;
   switch (type) {
     case SEARCH_MOVIES:
