@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Typography, Container, Divider, makeStyles } from '@material-ui/core';
+import { Grid, Typography, Container, Divider, CircularProgress, makeStyles } from '@material-ui/core';
 import StarBorderOutlinedIcon from '@material-ui/icons/StarBorderOutlined';
 import StarOutlinedIcon from '@material-ui/icons/StarOutlined';
 import { getMovie, addFavoriteMovie, removeFavoriteMovie } from '../actions';
@@ -45,6 +45,12 @@ export const MovieDetailPage = () => {
   }, [dispatch, id, isLoading, m.Title, m.imdbID]);
   const title = (m.Title || '') + (m.Year ? ` (${m.Year})` : '');
   const FavoriteComponent = isFavorite ? StarOutlinedIcon : StarBorderOutlinedIcon;
+  if (isLoading)
+    return (
+      <Container className={classes.container}>
+        <CircularProgress />
+      </Container>
+    );
   return (
     <Container className={classes.container}>
       <Grid container direction="column" spacing={3}>
