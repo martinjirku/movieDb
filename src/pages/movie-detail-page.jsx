@@ -52,7 +52,7 @@ export const MovieDetailPage = () => {
           <Grid item xs={4}>
             <img
               className={classes.poster}
-              src={!isEmptyInformation(m.Poste) ? m.Poster : `https://via.placeholder.com/300x456.png?text=${m.Title}`}
+              src={!isEmptyInformation(m.Poster) ? m.Poster : `https://via.placeholder.com/300x456.png?text=${m.Title}`}
               alt={title}
             />
           </Grid>
