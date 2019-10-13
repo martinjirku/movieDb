@@ -47,12 +47,12 @@ export const MovieDetailPage = () => {
   const FavoriteComponent = isFavorite ? StarOutlinedIcon : StarBorderOutlinedIcon;
   return (
     <Container className={classes.container}>
-      <Grid container direction="column">
+      <Grid container direction="column" spacing={3}>
         <Grid container direction="row" spacing={3}>
           <Grid item xs={4}>
             <img
               className={classes.poster}
-              src={m.Poster !== 'N/A' ? m.Poster : `https://via.placeholder.com/300x456.png?text=${m.Title}`}
+              src={!isEmptyInformation(m.Poste) ? m.Poster : `https://via.placeholder.com/300x456.png?text=${m.Title}`}
               alt={title}
             />
           </Grid>
@@ -71,10 +71,11 @@ export const MovieDetailPage = () => {
             </Typography>
             <Divider />
             <Typography variant="subtitle1" gutterBottom>
+              {/* TODO handle empty values */}
               {m.Type} | Rating {m.imdbRating}/10 ({m.imdbVotes} votes) | {m.Rated}{' '}
               {isEmptyInformation(m.Website) ||
                 ` | ${(
-                  <a href={m.Website} target="blank">
+                  <a href={m.Website} rel="noopener noreferrer" target="_blank">
                     Website
                   </a>
                 )}`}
@@ -89,7 +90,7 @@ export const MovieDetailPage = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid container direction="row">
+      <Grid container direction="row" spacing={3}>
         <Grid item xs={6}>
           <DetailedInformation title="Actors" value={m.Actors} />
           <DetailedInformation title="Awards" value={m.Awards} />
@@ -101,7 +102,7 @@ export const MovieDetailPage = () => {
           <Grid item xs={6}>
             <Typography variant="h6">Ratings</Typography>
             {m.Ratings.map((r) => (
-              <Typography>
+              <Typography key={r.Source}>
                 {r.Source}: <em>{r.Value}</em>
               </Typography>
             ))}
